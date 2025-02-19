@@ -26,9 +26,8 @@ uploaded_files = st.file_uploader("Upload a file", type=["csv", "xlsx"], accept_
 
 if uploaded_files:
     for file in uploaded_files:
-        file_name = file.name
 
-        file_ext = os.path.splitext(file_name)[-1].lower()
+        file_ext = os.path.splitext(file.name)[-1].lower()
         if file_ext == ".csv":
             df = pd.read_csv(file)
         elif file_ext == ".xlsx":
@@ -43,25 +42,24 @@ if uploaded_files:
 
         #data cleaning options
         st.subheader("Data Cleaning Options")
-        if st.checkbox(f"clean data for {file_name}"): 
+        if st.checkbox(f"clean data for {file.name}"): 
             col1, col2 = st.columns(2)
             with col1:
-                if st.button(f"Remove duplicates from the file {file_name}"): 
+                if st.button(f"Remove duplicates from the file {file.name}"): 
                     df.drop_duplicates(inplace=True)
-                    st.write(f"Duplicate rows removed from {file_name}")
+                    st.write(f"Duplicate rows removed from {file.name}")
 
             with col2:
-                if st.button(f"Fill missing values from the file {file_name}"): 
+                if st.button(f"Fill missing values from the file {file.name}"): 
                     numeric_cols = df.select_dtypes(include=['number']).columns
                     df[numeric_cols] = df[numeric_cols].fillna(df[numeric_cols].mean())
-                    st.write(f"Missing values filled from {file_name}") 
+                    st.write(f"Missing values filled from {file.name}") 
 
             st.subheader("Select Columns to keep")
             columns = st.multiselect(f"Choose columns for {file.name}", df.columns, default=df.columns)
             df = df[columns]           
 #data visualisation
 st.subheader("Data Visualisation")
-file_name = file.name
 if st.checkbox(f"show visualization for {file.name}"):
     st.bar_chart(df.select_dtypes(include='number').iloc[:, :2])
 
