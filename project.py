@@ -18,7 +18,7 @@ st.markdown(
 unsafe_allow_html=True
 )
 #title and description
-st.title("Data Sweeper")
+st.title("✨Data Sweeper🌟")
 st.write("Data Sweeper transform your files between CSV and Excel format with built in data cleaning.")
 
 #file uploader
@@ -30,10 +30,10 @@ if uploaded_files:
         file_ext = os.path.splitext(file.name)[-1].lower()
         if file_ext == ".csv":
             df = pd.read_csv(file)
-        elif file_ext == ".xlsx":
+        elif file_ext == "xlsx":
             df = pd.read_excel(file)
         else:
-            st.error("Unsupported file format. Please upload a CSV or Excel file.")
+            st.error("Unsupported file format. Please upload a CSV or Excel file.{file_ext}")
             continue
 
 #file details
