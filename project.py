@@ -30,10 +30,10 @@ if uploaded_files:
         file_ext = os.path.splitext(file.name)[-1].lower()
         if file_ext == ".csv":
             df = pd.read_csv(file)
-        elif file_ext == "xlsx":
+        elif file_ext == ".xlsx":
             df = pd.read_excel(file)
         else:
-            st.error("Unsupported file format. Please upload a CSV or Excel file.{file_ext}")
+            st.error(f"Unsupported file format. Please upload a CSV or Excel file: {file_ext}")
             continue
 
 #file details
@@ -42,7 +42,7 @@ if uploaded_files:
 
         #data cleaning options
         st.subheader("Data Cleaning Options")
-        if st.checkbox(f"clean data for {file.name}"): 
+        if st.checkbox(f"clean data for {file.name}, key=f"viz_{file.name}"): 
             col1, col2 = st.columns(2)
             with col1:
                 if st.button(f"Remove duplicates from the file {file.name}"): 
@@ -66,16 +66,16 @@ if st.checkbox(f"show visualization for {file.name}"):
     # Conversion options
 
     st.subheader("Conversion Options")
-    conversion_type = st.radio(f"Convert {file.name} to:", ["cvs", "Excel"], key=file.name)
+    conversion_type = st.radio(f"Convert {file.name} to:", ["CSV", "Excel"], key=file.name)
     if st.button(f"Convert{file.name}"):
         buffer = BytesIO()
         if conversion_type == "CSV":
-            df.to.csv(buffer, index=False)
+            df.to_csv(buffer, index=False)
             file.name = file.name.replace(file_ext, ".csv")
             mime_type = "text/csv"
 
         elif conversion_type == "Excel":
-                df.to.excel(buffer, index=False)
+                df.to_excel(buffer, index=False)
                 file.name = file.name.replace(file_ext, ".xlsx")
                 mime_type = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
                 buffer.seek(0)
